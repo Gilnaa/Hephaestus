@@ -1,0 +1,18 @@
+<ul class="thumbnails pull-left">
+	<li>
+		<a href="#" class="thumbnail"> <%= get_gravatar_for(@user)%> </a>
+	</li>
+	<li class="thumbnail">
+		<h1><%= @user.username.capitalize %></h1>
+
+		<dl class="dl-horizontal">
+			<dt>
+				Name
+			</dt>
+			<dd>
+				<%= "#{@user.first_name} #{@user.last_name}"%>
+			</dd>
+		</dl>
+
+	</li>
+</ul>

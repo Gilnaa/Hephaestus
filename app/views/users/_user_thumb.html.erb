@@ -1,0 +1,8 @@
+<% require 'users_helper'%>
+<a href="<%= user_path(id: @user.id)%>" class="thumbnail">
+	 <%= get_gravatar_for(@user)%>
+	 
+	 <h5 class="label" style="background-color: <%=@user.role.color%>">
+	 	 <%= @user.username.capitalize %>
+ 	 </h5>
+</a>

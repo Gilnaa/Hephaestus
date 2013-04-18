@@ -1,0 +1,41 @@
+<h1 class="page-header">Registerd Users</h1>
+<%if @number_of_pages > 0%>
+<div class="pagination pagination-centered">
+	<ul>
+		<%if @page_number > 0%>
+		<li>
+			<%= link_to "Previous"%>
+		</li>
+		<%end%>
+
+		<%(@number_of_pages + 1).times do |i|%>
+
+			<%if @page_number == i%>
+			<li class="active">
+				<%= link_to i.to_s, '#'%>
+			</li>
+			<%else%>
+			<li>
+				<%= link_to i.to_s, users_path(page_number: i)%>
+			</li>
+			<%end%>
+		
+		<%end%>
+
+		<%if @page_number < @number_of_pages%>
+		<li>
+			<%= link_to "Next"%>
+		</li>
+		<%end%>
+	</ul>
+</div>
+<% end %>
+<ul class="thumbnails">
+	<% @users.sort! {|a,b| a.access_role.id <=> b.access_role.id}%>
+	<% @users.each do |user| %>
+	<% @user = user %>
+	<li class="span2">
+		<%= render 'user_thumb'%>
+	</li>
+	<%end%>
+</ul>
