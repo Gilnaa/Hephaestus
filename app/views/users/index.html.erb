@@ -31,7 +31,7 @@
 </div>
 <% end %>
 <ul class="thumbnails">
-	<% @users.sort! {|a,b| a.access_role.id <=> b.access_role.id}%>
+	<% @users.sort! {|a,b| a.role.id <=> b.role.id}%>
 	<% @users.each do |user| %>
 	<% @user = user %>
 	<li class="span2">

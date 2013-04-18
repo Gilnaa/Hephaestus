@@ -22,9 +22,9 @@ section {
   padding-top: 9px;
   font-weight: bold;
   line-height: 1;
+  
   &:hover {
-    color: #dedede;
-    text-decoration: none;
+    color: #efefef;
   }
 }
 
@@ -33,6 +33,10 @@ a {
   &:hover {
     color: #00aa00;
     text-decoration: none;
+    background-color: transparent;
+  }
+  &:focus {
+    outline: none;
   }
 }
 footer {

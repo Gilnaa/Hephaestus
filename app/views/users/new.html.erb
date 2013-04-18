@@ -1,8 +1,7 @@
 <h1 class="text-center">Sign up</h1>
 <div class="row">
 	<div class="span4 offset4">
-		<%= @user.access_role%>
-		<%= form_for @user, url: {action: "create"} do |f| %>
+		<%= form_for @user do |f| %>
 		<%= render 'shared/error_messages' %>
 		
 		<%= f.label :username %>
