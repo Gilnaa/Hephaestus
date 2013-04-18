@@ -16,5 +16,8 @@
 			<%= yield %>
 		</div>
 		<%= render 'layouts/footer' %>
+		<div class=".debug">
+			Cookie: <%=cookies[:remember_token]%>
+		</div>
 	</body>
 </html>
