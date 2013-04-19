@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Hephaestus</title>
+		<title>Hephaestus - <%= yield :title%></title>
 		<%= stylesheet_link_tag    "application", :media => "all" %>
 		<%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
+
 	</head>
 	<body>
-		<%= render 'layouts/header' %>
-		<div class="container main-display full-height-wrapper">
-			<% flash.each do |key, value| %>
-			<%= content_tag(:div, value, class: "alert alert-#{key}") %>
-			<% end %>
+		<div class="full-height-wrapper">
+			<%= render 'layouts/header' %>
 
-			<%= yield %>
-		</div>
-		<%= render 'layouts/footer' %>
-		<div class=".debug">
-			Cookie: <%=cookies[:remember_token]%>
+			<div class="container main-display">
+				<%= yield :breadcrumb%>
+				<% @breadcrumbs ||= {}%>
+				<% if not @breadcrumbs.empty?%>
+				<%= render 'layouts/breadcrumb' %>
+				<% end -%>
+				
+				<% flash.each do |key, value| %>
+				<%= content_tag(:div, value, class: "alert alert-#{key}") %>
+				<% end %>
+
+				<%= yield %>
+			</div>
+			<%= render 'layouts/footer' %>
 		</div>
 	</body>
 </html>

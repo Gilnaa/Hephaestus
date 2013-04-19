@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   has_secure_password
-  attr_accessible  :password_digest, :password, :password_confirmation
+  attr_accessible  :password_digest, :password, :password_confirmation, :created_at
   attr_accessible :email, :first_name, :last_name, :signature, :username
 
   validates :username, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
@@ -11,9 +11,10 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true
 
   belongs_to :role
-  has_many :forum_moderations
-  has_many :forum_threads
-  has_many :forum_comments
+  has_many :forum_threads, class_name: 'Forum::Thread'
+  has_many :forum_comments, class_name: 'Forum::Comment'
+  has_many :forum_moderations, dependent: :destroy, class_name: 'Forum::ForumModeration'
+  has_many :category_moderations, dependent: :destroy, class_name: 'Forum::CategoryModeration'
 
   before_save do |user|
     user.username.downcase!

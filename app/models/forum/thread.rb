@@ -3,5 +3,5 @@ class Forum::Thread < ActiveRecord::Base
   belongs_to :user
   attr_accessible :body, :title
   
-  has_many :comments
+  has_many :comments, dependent: :destroy
 end

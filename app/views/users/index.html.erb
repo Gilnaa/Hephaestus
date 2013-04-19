@@ -34,7 +34,7 @@
 	<% @users.sort! {|a,b| a.role.id <=> b.role.id}%>
 	<% @users.each do |user| %>
 	<% @user = user %>
-	<li class="span2">
+	<li>
 		<%= render 'user_thumb'%>
 	</li>
 	<%end%>

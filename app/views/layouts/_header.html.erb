@@ -8,16 +8,21 @@
 						<%= link_to "Home",    root_path %>
 					</li>
 					<li class="divider-vertical"></li>
+					<li>
+						<%= link_to "Forum",    forums_path %>
+					</li>
+					<li class="divider-vertical"></li>
+					<li>
+						<%= link_to "Users",    users_path %>
+					</li>
 					<li class="divider-vertical"></li>
 					<% if signed_in? %>
 					<li id="fat-menu" class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Account <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="<%= user_path(current_user)%>">
-									<%= get_gravatar_for(current_user, 24)%>
-									 Profile
-							 	</a>
+								<a href="<%= user_path(current_user)%>"> <%= get_gravatar_for(current_user, 24)%>
+								Profile </a>
 							</li>
 							<li>
 								<%= link_to "Settings", '#' %>

@@ -1,18 +1,75 @@
-<ul class="thumbnails pull-left">
-	<li>
-		<a href="#" class="thumbnail"> <%= get_gravatar_for(@user)%> </a>
-	</li>
-	<li class="thumbnail">
-		<h1><%= @user.username.capitalize %></h1>
-
+<div class="row-fluid">
+	<div class="span3 text-center ">
+		<a href="#" class="btn"> <i class="icon-envelope"></i> Send message </a>
+	</div>
+	<div class="span9">
+		<%= get_gravatar_for(@user, nil, "img-polaroid pull-right")%>
+		<h1 ><%= @user.username.capitalize %></h1>
+		
+		<a href="#" class="label" style="background-color:  <%= @user.role.color%>">
+			<%= @user.role.adjective %>
+		</a>
+		<br />
+		<br />
+		<h3>Personal Information</h3>
 		<dl class="dl-horizontal">
 			<dt>
-				Name
+				Registration Date
 			</dt>
 			<dd>
-				<%= "#{@user.first_name} #{@user.last_name}"%>
+				<%= @user.created_at%>
 			</dd>
-		</dl>
+			<dt>
+				Birthday
+			</dt>
+			<dd>
+				<!-- TODO -->
+				<small>Not Yet Implemented</small>
+			</dd>
+			<br/>
 
-	</li>
-</ul>
+		</dl>
+		<div class="row-fluid">
+			<div class="span6">
+				<h3>Forum Statistics</h3>
+				<dl class="dl-horizontal">
+					<dt>
+						# of Threads
+					</dt>
+					<dd>
+						<%= @user.forum_threads.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
+					</dd>
+					<br />
+					<dt>
+						# of Comments
+					</dt>
+					<dd>
+						<%= @user.forum_comments.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
+					</dd>
+				</dl>
+			</div>
+			<div class="span6">
+				<h3>Blog Statistics</h3>
+				<dl class="dl-horizontal">
+					<dt>
+						# of Threads
+					</dt>
+					<dd>
+						<%= @user.forum_threads.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
+					</dd>
+					<br />
+					<dt>
+						# of Comments
+					</dt>
+					<dd>
+						<%= @user.forum_comments.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
+					</dd>
+				</dl>
+			</div>
+		</div>
+		<% if !@user.signature.nil? && !@user.signature.empty? %>
+			<hr />
+			<%= @user.signature%>
+		<%end%>
+	</div>
+</div>

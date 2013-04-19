@@ -1,0 +1,40 @@
+<% provide :title, @forum.name%>
+<% content_for :breadcrumb do%>
+<% @breadcrumbs = {'Forums' => forums_path, @forum.name => forum_view_path(@forum)}%>
+<% end -%>
+<div class="navbar ">
+	<div class="navbar-inner">
+		<span class="brand"><%= @forum.name%></span>
+		<ul class="nav">
+			<li><a href="#">New Thread</a></li>
+		</ul>
+		<form action="" class="navbar-search pull-right">
+			<input type="text" placeholder="Search- TODO" class="search-query span2">
+		</form>
+	</div>
+</div>
+<% if @forum.threads.count == 0 %>
+<h2>Sorry, no threads in this forum.</h2>
+<% else %>
+<table class="table table-condensed table-hover">
+	<thead>
+		<th></th>
+		<th>Title</th>
+		<th>Author</th>
+	</thead>
+	<% @forum.threads.each do |t|%>
+	<tr>
+		<td></td>
+		<td style="vertical-align: middle;">
+			<%= link_to t.title, '#' %>
+		</td>
+		<td>
+			<%= get_gravatar_for(t.user, 32, 'img-polaroid') -%>
+			<span class="label" style="background-color: <%=t.user.role.color%>">
+			<%= link_to t.user.username.capitalize, t.user %>
+			</span>
+		</td>
+	</tr>
+	<% end -%>
+</table>
+<% end -%>

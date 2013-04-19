@@ -3,7 +3,7 @@ class Forum::Forum < ActiveRecord::Base
   attr_accessible :description, :list_order, :name
   
   has_many :threads
-  has_many :forum_moderations
+  has_many :forum_moderations, dependent: :destroy
   
   before_save do |forum|
     # Create default forum rules if not already existent.
