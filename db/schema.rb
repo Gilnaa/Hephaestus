@@ -1,13 +1,3 @@
-#-------------------------------------------------------------------------------
-# Copyright (c) 2013 Gilad Naaman.
-# All rights reserved. This program and the accompanying materials
-# are made available under the terms of the GNU Public License v3.0
-# which accompanies this distribution, and is available at
-# http://www.gnu.org/licenses/gpl.html
-# 
-# Contributors:
-#     Gilad Naaman - initial API and implementation
-#-------------------------------------------------------------------------------
 # encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
@@ -21,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130418130221) do
+ActiveRecord::Schema.define(:version => 20130421084148) do
 
   create_table "forum_categories", :force => true do |t|
     t.string   "name"
@@ -44,13 +34,13 @@ ActiveRecord::Schema.define(:version => 20130418130221) do
   create_table "forum_comments", :force => true do |t|
     t.text     "body"
     t.integer  "thread_id"
-    t.integer  "user_id"
+    t.integer  "author_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "forum_comments", ["author_id"], :name => "index_forum_comments_on_user_id"
   add_index "forum_comments", ["thread_id"], :name => "index_forum_comments_on_thread_id"
-  add_index "forum_comments", ["user_id"], :name => "index_forum_comments_on_user_id"
 
   create_table "forum_forum_moderations", :force => true do |t|
     t.integer  "forum_id"
@@ -91,13 +81,13 @@ ActiveRecord::Schema.define(:version => 20130418130221) do
     t.string   "title"
     t.text     "body"
     t.integer  "forum_id"
-    t.integer  "user_id"
+    t.integer  "author_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "forum_threads", ["author_id"], :name => "index_forum_threads_on_user_id"
   add_index "forum_threads", ["forum_id"], :name => "index_forum_threads_on_forum_id"
-  add_index "forum_threads", ["user_id"], :name => "index_forum_threads_on_user_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name"

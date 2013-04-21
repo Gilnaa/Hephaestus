@@ -12,7 +12,7 @@ class Forum::Forum < ActiveRecord::Base
   belongs_to :category
   attr_accessible :description, :list_order, :name
   
-  has_many :threads
+  has_many :threads, class_name: 'Forum::Thread'
   has_many :forum_moderations, dependent: :destroy
   
   before_save do |forum|
@@ -37,7 +37,7 @@ class Forum::Forum < ActiveRecord::Base
   # and a specific role.
   def get_default_rules
     
-    rules = ForumRoleMatch.where('forum = ?', self).find_by_role(nil)
+    rules = ForumRoleMatch.where('forum_id = ? AND role_id = ?', @id, nil).first
     if not rules
       rules = ForumRoleMatch.get_default.dup
       rules.forum = self
@@ -50,7 +50,7 @@ class Forum::Forum < ActiveRecord::Base
   ##
   # Returns the +ForumRoleMatch+ for the current forum and for the given role. 
   def get_forum_rules(role)
-    rules = ForumRoleMatch.where('role = ?', role).find_by_forum(self)
+    rules = ForumRoleMatch.where('role_id = ? AND forum_id = ?', role.object_id, @id).first
     if not rules
       rules = self.get_default_rules.dup
       rules.role = role

@@ -1,0 +1,26 @@
+// Place all the styles related to the Forum/Thread controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.message {
+  -webkit-box-shadow: inset 1px 1px 5px 1px rgba(1, 1, 1, 0.3);
+  box-shadow: inset 1px 1px 5px 1px rgba(1, 1, 1, 0.3);
+  
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 15px;
+  overflow: hidden;
+  .thumbnail {
+    -webkit-box-shadow:  1px 1px 5px 1px rgba(1, 1, 1, 0.3);
+    box-shadow:  1px 1px 5px 1px rgba(1, 1, 1, 0.3);
+  }
+}
+.message-op {
+  background-color: rgba(200, 0, 0, 0.1);
+  .thumbnail {
+    background-color: rgb(239, 239, 239);
+  }
+}
+.thread_date {
+  color: gray;
+  font-size: 1em;
+}

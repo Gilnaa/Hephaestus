@@ -1,0 +1,65 @@
+<% content_for :breadcrumb do%>
+	<% @breadcrumbs = {'Forums' => forums_path, @thread.forum.category.name => forums_category_path(@thread.forum.category.id), @thread.forum.name => forum_view_path(@thread.forum.id), @thread.title => '#'}%>
+<% end -%>
+<div class="navbar">
+	<div class="navbar-inner">
+		<span class="brand"><%= @thread.title%></span>
+		<ul class="nav">
+			<li><a href="#">Reply</a></li>
+		</ul>
+	</div>
+</div>
+<%if @number_of_pages > 0%>
+<div class="pagination pagination-centered">
+	<ul>
+		<%if @page_number > 0%>
+			<li>
+				<%= link_to "Previous"%>
+			</li>
+		<%end%>
+
+		<%(@number_of_pages + 1).times do |i|%>
+
+			<%if @page_number == i%>
+				<li class="active">
+					<%= link_to i.to_s, '#'%>
+				</li>
+			<%else%>
+				<li>
+					<%= link_to i.to_s, forum_thread_page(@thread.id, i)%>
+				</li>
+			<%end%>
+		
+		<%end%>
+
+		<%if @page_number < @number_of_pages%>
+		<li>
+			<%= link_to "Next"%>
+		</li>
+		<%end%>
+	</ul>
+</div>
+<% end %>
+<div class="message message-op">
+	
+	<span class="pull-right">
+		<% @user = @thread.author%>
+		<%= render 'users/user_thumb'%>
+	</span>
+
+	<p><%= @thread.body%></p>	
+</div>
+<date class="pull-right thread_date"><small><%= format_date @thread.created_at %></small></date>
+<% if @comments.count > 0 %>
+	<h5>Comments:</h5>
+	<% @comments.each do |comment|%>
+		<span class="pull-right">
+			<% @user = @thread.author%>
+			<%= render 'users/user_thumb'%>
+		</span>
+		<div class="message <%= 'message-op' if comment.user == @thread.author %>">
+			<p><%= comment.body%></p>
+			<pre><%= comment.created_at%></pre>
+		</div>
+	<% end %>
+<% end %>

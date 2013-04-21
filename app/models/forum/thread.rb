@@ -10,8 +10,8 @@
 #-------------------------------------------------------------------------------
 class Forum::Thread < ActiveRecord::Base
   belongs_to :forum
-  belongs_to :user
-  attr_accessible :body, :title
+  belongs_to :author, class_name: 'User'
+  attr_accessible :body, :title, :created_at
   
   has_many :comments, dependent: :destroy
 end
