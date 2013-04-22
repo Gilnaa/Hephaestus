@@ -1,3 +1,4 @@
+<% provide :title, @thread.title%>
 <% content_for :breadcrumb do%>
 	<% @breadcrumbs = {'Forums' => forums_path, @thread.forum.category.name => forums_category_path(@thread.forum.category.id), @thread.forum.name => forum_view_path(@thread.forum.id), @thread.title => '#'}%>
 <% end -%>
@@ -46,7 +47,8 @@
 		<%= render partial: 'users/user_thumb', locals: {user: @thread.author} %>
 	</span>
 
-	<p><%= @thread.body%></p>	
+	<p><%= @thread.body%></p>
+	<%= render partial: 'forum/in_thread_control_box', locals: {thread: @thread}%>
 </div>
 <date class="pull-right thread_date"><small><%= format_date @thread.created_at %></small></date>
 <% if @comments.count > 0 %>

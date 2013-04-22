@@ -12,4 +12,5 @@ class Forum::Comment < ActiveRecord::Base
   belongs_to :thread
   belongs_to :author, class_name: 'User'
   attr_accessible :body, :created_at
+  validates :body, presence: true, length: {minimum: 2}
 end

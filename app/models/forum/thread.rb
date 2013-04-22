@@ -13,5 +13,8 @@ class Forum::Thread < ActiveRecord::Base
   belongs_to :author, class_name: 'User'
   attr_accessible :body, :title, :created_at
   
+  validates :body, presence: true, length: {minimum: 2}
+  validates :title, presence: true, length: {minimum: 3,maximum: 140}
+    
   has_many :comments, dependent: :destroy
 end

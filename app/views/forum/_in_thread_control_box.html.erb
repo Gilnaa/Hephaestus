@@ -1,0 +1,15 @@
+<div class="btn-group in_thread_control-box">
+	<% if signed_in? %>
+		<% if current_user.role.is_admin or current_user.can_moderate_forum? thread.forum %>
+			<%= form_tag delete_forum_thread_path(thread.id), method: :delete, id: 'form_delete_thread' do |f|%>
+			<% end %>
+			<%= button_tag 'X', type: 'submit', form: 'form_delete_thread', class: 'btn'%>
+			<button class="btn"><i class="icon-ban-circle"></i></button> <!-- Close -->
+			<button class="btn"><i class="icon-pencil"></i></button> <!-- Edit -->
+		<% elsif current_user == thread.author %>
+			<button class="btn"><i class="icon-pencil"></i></button> <!-- Edit -->
+		<% end %>
+	<% end %>
+	
+	<button class="btn"><i class="icon-warning-sign"></i></button>
+</div>

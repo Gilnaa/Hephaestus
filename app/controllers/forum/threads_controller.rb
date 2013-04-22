@@ -65,17 +65,21 @@ class Forum::ThreadsController < ApplicationController
   end
 
   def edit
+    @thread = Forum::Thread.find(params[:thread_id])
   end
 
   def update
   end
 
   def delete
-    @thread = Thread.find(params[:thread_id])
-    if not current_user.is_moderator
+    @thread = Forum::Thread.find(params[:thread_id])
+    if not current_user.is_admin? and not current_user.can_moderate_forum?(@thread.forum)
       redirect_to @thread
     end
+    forum = @thread.forum
     @thread.destroy
+    flash[:info] = "Thread deleted successfuly."
+    redirect_to forum_view_path(forum.id)
   end
   
   def new_comment
