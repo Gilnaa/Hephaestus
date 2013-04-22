@@ -29,8 +29,8 @@
 			<%= link_to t.title, forum_thread_path(t.id) %>
 		</td>
 		<td>
-			<% @user = t.author%>
-			<%= render 'users/user_row' %>
+			<%= render partial: 'users/user_row', locals: {user: t.author} %>
+			<%= render partial: 'forum/control_box', locals: {thread: t}%>
 		</td>
 	</tr>
 	<% end -%>

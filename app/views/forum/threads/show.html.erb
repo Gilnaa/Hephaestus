@@ -5,7 +5,7 @@
 	<div class="navbar-inner">
 		<span class="brand"><%= @thread.title%></span>
 		<ul class="nav">
-			<li><a href="#">Reply</a></li>
+			<li><%= link_to "Reply", new_forum_comment_path(@thread.id)%></li>
 		</ul>
 	</div>
 </div>
@@ -43,8 +43,7 @@
 <div class="message message-op">
 	
 	<span class="pull-right">
-		<% @user = @thread.author%>
-		<%= render 'users/user_thumb'%>
+		<%= render partial: 'users/user_thumb', locals: {user: @thread.author} %>
 	</span>
 
 	<p><%= @thread.body%></p>	
@@ -53,13 +52,14 @@
 <% if @comments.count > 0 %>
 	<h5>Comments:</h5>
 	<% @comments.each do |comment|%>
-		<span class="pull-right">
-			<% @user = @thread.author%>
-			<%= render 'users/user_thumb'%>
-		</span>
-		<div class="message <%= 'message-op' if comment.user == @thread.author %>">
+		<div class="message <%= 'message-op' if comment.author == @thread.author %>">
+			<span class="pull-right">
+				<%= render partial: 'users/user_thumb', locals: {user: comment.author} %>
+			</span>
 			<p><%= comment.body%></p>
-			<pre><%= comment.created_at%></pre>
 		</div>
+		<date class="pull-right thread_date"><small><%= format_date comment.created_at %></small></date>
+		<br/>
+		<br/>
 	<% end %>
 <% end %>

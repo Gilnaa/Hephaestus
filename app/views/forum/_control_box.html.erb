@@ -1,0 +1,9 @@
+<div class="btn-group control-box">
+	<% if signed_in? and (current_user.role.is_admin or current_user.can_moderate_forum? thread.forum) %>
+    	<button class="btn"><i class="icon-remove"></i></button>
+    	<button class="btn"><i class="icon-share-alt"></i></button>
+		<button class="btn"><i class="icon-ban-circle"></i></button>
+	<% end %>
+	<button class="btn"><i class="icon-warning-sign"></i></button>
+</div>
+

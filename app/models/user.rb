@@ -21,8 +21,10 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true
 
   belongs_to :role
-  has_many :forum_threads, class_name: 'Forum::Thread'
-  has_many :forum_comments, class_name: 'Forum::Comment'
+  
+  # Forum related associations.
+  has_many :forum_threads, class_name: 'Forum::Thread', foreign_key: 'author_id'
+  has_many :forum_comments, class_name: 'Forum::Comment', foreign_key: 'author_id'
   has_many :forum_moderations, dependent: :destroy, class_name: 'Forum::ForumModeration'
   has_many :category_moderations, dependent: :destroy, class_name: 'Forum::CategoryModeration'
 
@@ -35,26 +37,32 @@ class User < ActiveRecord::Base
     # Currently. Role #3 is regulars.
     user.role ||= Role.find(3)
     
-    self.remember_token = SecureRandom.urlsafe_base64
+    user.remember_token = SecureRandom.urlsafe_base64
   end
 
   ######
   public
   ######
-  
+    def is_admin?
+      self.role.is_admin
+    end
+    def is_moderator?
+      self.role.is_moderator
+    end
     def can_moderate_forum?(forum)
       # If the user is an admin, he will automagicaly be able to moderate the forum.
-      true if @role.is_admin
+      true if self.is_admin?
+      
       # If the user is not a moderator, he won't be able to moderate the forum,
       # even if there is a record of moderation.
-      false if not @role.is_moderator
+      false if not self.is_moderator?
   
       # The user will be able to moderate the forum if he is a moderator
       # of the specific forum or of the category he's in.
       category = forum.category
-      f_mod = ForumModeration.where('user = ?', self).find_by_forum(forum)
-      c_mod = CategoryModeration.where('user = ?', self).find_by_category(category)
-      (f_mod or c_mode)
+      f_mod = Forum::ForumModeration.where('user_id = ?', @id).find_by_forum_id(forum.id)
+      c_mod = Forum::CategoryModeration.where('user_id = ?', @id).find_by_category_id(category.id)
+      (f_mod or c_mod)
     end
   
     def can_view_forum?(forum)
