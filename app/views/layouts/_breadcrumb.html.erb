@@ -1,17 +1,18 @@
+<%= yield :breadcrumb%>
+<% @breadcrumbs ||= {}%>
 <ul class="breadcrumb">
-
 	<li>
-		<a href="<%= root_path%>"><i class="icon-home"></i></a><span class="divider"> ></span>
+		<a href="<%= root_path%>"><i class="icon-home"></i></a>
 	</li>
 
 	<% @breadcrumbs.each do |key, value|%>
 	<%if key == @breadcrumbs.keys.last %>
 	<li class="active">
-		<%= key%>
+		<span class="divider"> ></span> <%= key%>
 	</li>
 	<% else %>
 	<li>
-		<%= link_to key, value%> <span class="divider"> ></span>
+		<span class="divider"> ></span> <%= link_to key, value%> 
 	</li>
 	<% end %>
 	<% end %>

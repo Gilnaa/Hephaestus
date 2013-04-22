@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(:version => 20130421084148) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "forum_comments", ["author_id"], :name => "index_forum_comments_on_user_id"
+  add_index "forum_comments", ["author_id"], :name => "index_forum_comments_on_author_id"
   add_index "forum_comments", ["thread_id"], :name => "index_forum_comments_on_thread_id"
 
   create_table "forum_forum_moderations", :force => true do |t|
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(:version => 20130421084148) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "forum_threads", ["author_id"], :name => "index_forum_threads_on_user_id"
+  add_index "forum_threads", ["author_id"], :name => "index_forum_threads_on_author_id"
   add_index "forum_threads", ["forum_id"], :name => "index_forum_threads_on_forum_id"
 
   create_table "roles", :force => true do |t|

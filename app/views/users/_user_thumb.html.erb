@@ -1,9 +1,9 @@
 <% require 'users_helper'%>
 <div class="thumbnail">	
-	<a href="<%= user_path(id: @user.id)%>">
-		<%= get_gravatar_for(@user, nil, 'img-polaroid pull_both')%>
-	 	<h5 class="label" style="background-color: <%= @user.role.color%>">
-		 	 <%= @user.username.capitalize %>
+	<a href="<%= user_path(id: user.id)%>">
+		<%= get_gravatar_for(user, nil, 'img-polaroid pull_both')%>
+	 	<h5 class="label" style="background-color: <%= user.role.color%>">
+		 	 <%= user.username.capitalize %>
   		</h5>
 	</a>
 	<button class="btn btn-block" type="button">Message</button>

@@ -12,8 +12,7 @@
 			<%= render 'layouts/header' %>
 
 			<div class="container main-display">
-				<%= yield :breadcrumb%>
-					<%= render 'layouts/breadcrumb' %>
+				<%= render 'layouts/breadcrumb' %>
 				
 				<% flash.each do |key, value| %>
 					<%= content_tag(:div, value, class: "alert alert-#{key}") %>

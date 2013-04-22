@@ -1,2 +1,2 @@
-<%= get_gravatar_for(@user, 32, 'img-polaroid') %>
-<%= render 'users/user_label'%>
+<%= get_gravatar_for(user, 32, 'img-polaroid') %>
+<%= render partial: 'users/user_label', locals: {user: user}%>
