@@ -1,5 +1,5 @@
 <% content_for :breadcrumb do%>
-	<% @breadcrumbs = {'Forums' => forums_path, @thread.forum.category.name => forum_category_path(@thread.forum.category.id), @thread.forum.name => forum_view_path(@thread.forum.id), 'New Thread' => '#'}%>
+	<% @breadcrumbs = {'Forums' => forums_path, @thread.forum.category.name => forums_category_path(@thread.forum.category.id), @thread.forum.name => forum_view_path(@thread.forum.id), 'New Thread' => '#'}%>
 <% end -%>
 <div class="row">
 	<div class="span10 offset1">

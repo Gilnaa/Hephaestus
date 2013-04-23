@@ -10,36 +10,42 @@
 		</ul>
 	</div>
 </div>
-<%if @number_of_pages > 0%>
-<div class="pagination pagination-centered">
-	<ul>
-		<%if @page_number > 0%>
-			<li>
-				<%= link_to "Previous"%>
-			</li>
-		<%end%>
-
-		<%(@number_of_pages + 1).times do |i|%>
-
-			<%if @page_number == i%>
-				<li class="active">
-					<%= link_to i.to_s, '#'%>
-				</li>
-			<%else%>
+<%if @number_of_pages > 1%>
+	<div class="pagination pagination-centered">
+		<ul>
+			<%if @page_number > 0%>
 				<li>
-					<%= link_to i.to_s, forum_thread_page(@thread.id, i)%>
+					<%= link_to raw('<i class="icon-fast-backward"></i>'), forum_thread_page_path(@thread.id, 0)%>
+				</li>
+				<li>
+					<%= link_to raw('<i class="icon-step-backward"></i>'), forum_thread_page_path(@thread.id, @page_number - 1)%>
 				</li>
 			<%end%>
-		
-		<%end%>
-
-		<%if @page_number < @number_of_pages%>
-		<li>
-			<%= link_to "Next"%>
-		</li>
-		<%end%>
-	</ul>
-</div>
+	
+			<%(@number_of_pages).times do |i|%>
+	
+				<%if @page_number == i%>
+					<li class="active">
+						<%= link_to (i + 1).to_s, '#'%>
+					</li>
+				<%else%>
+					<li>
+						<%= link_to (i + 1).to_s, forum_thread_page_path(@thread.id, i)%>
+					</li>
+				<%end%>
+			
+			<%end%>
+	
+			<%if @page_number < @number_of_pages - 1%>
+			<li>
+				<%= link_to raw('<i class="icon-step-forward"></i>'), forum_thread_page_path(@thread.id, @page_number + 1)%>
+			</li>
+			<li>
+				<%= link_to raw('<i class="icon-fast-forward"></i>'), forum_thread_page_path(@thread.id, @number_of_pages)%>
+			</li>
+			<%end%>
+		</ul>
+	</div>
 <% end %>
 <div class="message message-op">
 	
