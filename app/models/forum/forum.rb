@@ -13,6 +13,7 @@ class Forum::Forum < ActiveRecord::Base
   attr_accessible :description, :list_order, :name
   
   has_many :threads, class_name: 'Forum::Thread'
+  has_many :topics, class_name: 'Topic'
   has_many :forum_moderations, dependent: :destroy
   
   before_save do |forum|

@@ -9,27 +9,26 @@
 #     Gilad Naaman - initial API and implementation
 #-------------------------------------------------------------------------------
 Hephaestus::Application.routes.draw do
-  NUMERIC_MATCH = /(0|[1-9][0-9]*)/
-  get "comment/new"
 
-  get "comment/view"
+  get "home/index"
 
-  get "comment/edit"
-
-  get "comment/delete"
-
-  root :to => 'home#index'
-
+  NUMERIC = /(0|[1-9][0-9]*)/
+  root to: 'home#index'
+  
   resources :users
-  resources :user
   match '/users/list/' => 'users#index'
-  match '/users/list/:page_number' => 'users#index', thread_id: NUMERIC_MATCH
+  match '/users/list/:page_number' => 'users#index', page_id: NUMERIC
   match '/signup/' => 'users#new'
 
   resources :sessions, only: [:new, :create, :destroy]
   match '/login/' => 'sessions#new'
   match '/logout/' => 'sessions#destroy', via: :delete
-
+  
+  resources :forums, only: [:index, :show], constraints: {:id => NUMERIC}
+  scope '/forums' do
+    resources :topics, only: [:show, :new, :create, :edit, :update, :destroy], constraints: {:id => NUMERIC}
+  end
+=begin
   match '/forum/' => 'forum::home#index', as: :forums
   match '/forum/cat/:id' => 'forum::home#index', as: :forums_category
   match '/forum/view/:id' => 'forum::home#view', as: :forum_view
@@ -46,4 +45,5 @@ Hephaestus::Application.routes.draw do
   match 'forum/thread/:thread_id/comment' => 'forum::threads#new_comment', as: :new_forum_comment, thread_id: NUMERIC_MATCH
   match 'forum/thread/create_comment' => 'forum/threads#create_comment', via: :post
   match 'forum/comment/:comment_id' => 'forum::threads#create_comment', as: :forum_comment, comment_id: NUMERIC_MATCH
+=end
 end

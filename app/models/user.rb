@@ -60,8 +60,8 @@ class User < ActiveRecord::Base
       # The user will be able to moderate the forum if he is a moderator
       # of the specific forum or of the category he's in.
       category = forum.category
-      f_mod = Forum::ForumModeration.where(user: self).find_by_forum_id(forum.id)
-      c_mod = Forum::CategoryModeration.where(user: @id).find_by_category_id(category.id)
+      f_mod = Forum::ForumModeration.where(user_id: @id).find_by_forum_id(forum.id)
+      c_mod = Forum::CategoryModeration.where(user_id: @id).find_by_category_id(category.id)
       (f_mod or c_mod)
     end
   

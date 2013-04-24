@@ -8,18 +8,12 @@
 # Contributors:
 #     Gilad Naaman - initial API and implementation
 #-------------------------------------------------------------------------------
-class Role < ActiveRecord::Base
-  BLACK = "#000000"
-  attr_accessible :adjective, :color, :groupname, :is_admin, :is_moderator, :name
+class ForumsController < ApplicationController
+  def index
+    @categories = Forum::Category.all
+  end
 
-  has_many :forum_role_matches, dependent: :destroy 
-  has_many :users
-
-  before_save do |role|
-    role.is_admin ||= false
-    role.is_moderator ||= false
-    
-    role.is_moderator = true if role.is_admin
-    role.color ||= BLACK
+  def show
+    @forum = Forum::Forum.find params[:id]
   end
 end

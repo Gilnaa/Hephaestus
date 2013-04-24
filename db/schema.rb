@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130421084148) do
+ActiveRecord::Schema.define(:version => 20130424171748) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "topic_id"
+    t.integer  "author_id"
+    t.string   "title"
+    t.text     "body"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "comments", ["author_id"], :name => "index_comments_on_author_id"
+  add_index "comments", ["topic_id"], :name => "index_comments_on_topic_id"
 
   create_table "forum_categories", :force => true do |t|
     t.string   "name"
@@ -39,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20130421084148) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "forum_comments", ["author_id"], :name => "index_forum_comments_on_author_id"
+  add_index "forum_comments", ["author_id"], :name => "index_forum_comments_on_user_id"
   add_index "forum_comments", ["thread_id"], :name => "index_forum_comments_on_thread_id"
 
   create_table "forum_forum_moderations", :force => true do |t|
@@ -86,7 +98,7 @@ ActiveRecord::Schema.define(:version => 20130421084148) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "forum_threads", ["author_id"], :name => "index_forum_threads_on_author_id"
+  add_index "forum_threads", ["author_id"], :name => "index_forum_threads_on_user_id"
   add_index "forum_threads", ["forum_id"], :name => "index_forum_threads_on_forum_id"
 
   create_table "roles", :force => true do |t|
@@ -101,16 +113,16 @@ ActiveRecord::Schema.define(:version => 20130421084148) do
   end
 
   create_table "topics", :force => true do |t|
+    t.integer  "forum_id"
+    t.integer  "author_id"
     t.string   "title"
     t.text     "body"
-    t.integer  "forum_id"
-    t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "topics", ["author_id"], :name => "index_topics_on_author_id"
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
-  add_index "topics", ["user_id"], :name => "index_topics_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "username"
