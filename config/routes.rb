@@ -9,13 +9,10 @@
 #     Gilad Naaman - initial API and implementation
 #-------------------------------------------------------------------------------
 Hephaestus::Application.routes.draw do
-
-  get "home/index"
-
   NUMERIC = /(0|[1-9][0-9]*)/
   root to: 'home#index'
   
-  resources :users
+  resources :users, constraints: {:id => NUMERIC}
   match '/users/list/' => 'users#index'
   match '/users/list/:page_number' => 'users#index', page_id: NUMERIC
   match '/signup/' => 'users#new'
@@ -25,8 +22,9 @@ Hephaestus::Application.routes.draw do
   match '/logout/' => 'sessions#destroy', via: :delete
   
   resources :forums, only: [:index, :show], constraints: {:id => NUMERIC}
-  scope '/forums' do
-    resources :topics, only: [:show, :new, :create, :edit, :update, :destroy], constraints: {:id => NUMERIC}
+  scope '/forums', constraints: {:id => NUMERIC} do
+    resources :topics, only: [:show, :new, :create, :edit, :update, :destroy]
+    resources :comments, only: [:show, :new, :create, :edit, :update, :destroy]
   end
 =begin
   match '/forum/' => 'forum::home#index', as: :forums
