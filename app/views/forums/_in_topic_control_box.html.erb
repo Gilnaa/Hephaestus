@@ -19,6 +19,6 @@
 	<button class="btn"><i class="icon-warning-sign"></i></button> <!-- Report -->
 </div>
 <% if is_moderator %>
-	<%= form_tag forums_topic_path(topic.id), method: :delete, id: 'form_delete_topic', style: 'display: none;' do |f|%>
+	<%= form_tag topic_path(topic), method: :delete, id: 'form_delete_topic', style: 'display: none;' do |f|%>
 	<% end %>
 <% end -%>

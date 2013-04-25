@@ -19,7 +19,7 @@ class TopicsController < ApplicationController
     if @topic.nil?
       redirect_to forums_path
       flash[:error] = "Found no topic with id of #{params[:id]}"
-      return
+    return
     end
 
     @number_of_pages = (@topic.comments.count / COMMENTS_PER_PAGE) + (@topic.comments.count % COMMENTS_PER_PAGE != 0 ? 1 : 0)
@@ -55,7 +55,7 @@ class TopicsController < ApplicationController
     @topic = Topic.new
     @topic.author = current_user
     @topic.forum = forum
-    
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @topic }
@@ -65,6 +65,13 @@ class TopicsController < ApplicationController
   # GET /topics/1/edit
   def edit
     @topic = Topic.find(params[:id])
+    unless current_user.can_moderate_forum? @topic.forum
+      if not signed_in? or (current_user != @topic.author)
+        flash[:error] = "You do not have access to editing this topic."
+        redirect_to @topic
+      return
+      end
+    end
   end
 
   # POST /topics
@@ -74,20 +81,21 @@ class TopicsController < ApplicationController
     attrs = params[:topic]
     @topic.forum_id, @topic.author = attrs[:forum_id], current_user
     @topic.body, @topic.title = attrs[:body], attrs[:title]
-    
+
     if attrs[:author_id] != current_user.id
-      # TODO: Scold user for trying to cheat the system using
-      # in-browser HTML editing tools.
-      # Yes, this is the only reason there is such field in the form.
+    # TODO: Scold user for trying to cheat the system using
+    # in-browser HTML editing tools.
+    # Yes, this is the only reason there is such field in the form.
     end
-    
-    # Don't allow the user to create thread if he hasn't the permissions to do so.
+
+    # Don't allow the user to create thread if he hasn't the permissions to do
+    # so.
     if not current_user.can_post_in_forum? @topic.forum
       flash[:error] = "You do not have access for creating new threads in this forum."
       redirect_to forum_path(forum)
     return
     end
-    
+
     respond_to do |format|
       if @topic.save
         format.html { redirect_to @topic, notice: 'Topic was successfully created.' }
@@ -103,9 +111,12 @@ class TopicsController < ApplicationController
   # PUT /topics/1.json
   def update
     @topic = Topic.find(params[:id])
+    attrs = params[:topic].dup
+    attrs.delete(:author_id)
+    attrs.delete(:forum_id)
 
     respond_to do |format|
-      if @topic.update_attributes(params[:topic])
+      if @topic.update_attributes(attrs)
         format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }
         format.json { head :no_content }
       else
@@ -119,11 +130,18 @@ class TopicsController < ApplicationController
   # DELETE /topics/1.json
   def destroy
     @topic = Topic.find(params[:id])
-    @topic.destroy
+    forum = @topic.forum
+    if not signed_in? or not current_user.can_moderate_forum? forum
+      flash[:error] = "You have no permission to delete topics in this forum."
+      redirect_to @topic
+    return
+    end
 
+    @topic.destroy
     respond_to do |format|
-      format.html { redirect_to topics_url }
+      format.html { redirect_to forum_url(forum) }
       format.json { head :no_content }
     end
+
   end
 end

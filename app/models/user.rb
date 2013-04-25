@@ -50,12 +50,12 @@ class User < ActiveRecord::Base
       self.role.is_moderator
     end
     def can_moderate_forum?(forum)
-      # If the user is an admin, he will automagicaly be able to moderate the forum.
-      true if self.is_admin?
+      # If the user is an admin, he will automagically be able to moderate the forum.
+      return true if self.is_admin?
       
       # If the user is not a moderator, he won't be able to moderate the forum,
       # even if there is a record of moderation.
-      false if not self.is_moderator?
+      return false unless self.is_moderator?
   
       # The user will be able to moderate the forum if he is a moderator
       # of the specific forum or of the category he's in.
