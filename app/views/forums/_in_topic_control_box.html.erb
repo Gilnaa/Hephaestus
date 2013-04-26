@@ -1,0 +1,24 @@
+<div class="btn-group in_topic_control-box">
+	<% if signed_in? %>
+		<% is_moderator = current_user.can_moderate_forum? topic.forum %>
+		<% if is_moderator %>
+		
+			<%= button_tag raw("<i class=\"icon-remove\"></i>"), type: 'submit',
+			 form: 'form_delete_topic', class: 'btn', title: 'Delete' %> <!-- Delete -->
+			 
+			<button class="btn"><i class="icon-lock"></i></button> <!-- Close -->
+			
+			<%= link_to raw("<i class=\"icon-pencil\"></i>"), edit_topic_path(topic.id),
+			 class: 'btn', title: 'Edit' %> <!-- Edit -->
+			 
+		<% elsif current_user == topic.author %>
+			<%= link_to raw("<i class=\"icon-pencil\"></i>"), edit_topic_path(topic.id),
+			 class: 'btn', title: 'Edit' %> <!-- Edit -->
+		<% end %>
+	<% end %>
+	<button class="btn"><i class="icon-warning-sign"></i></button> <!-- Report -->
+</div>
+<% if is_moderator %>
+	<%= form_tag topic_path(topic), method: :delete, id: 'form_delete_topic', style: 'display: none;' do |f|%>
+	<% end %>
+<% end -%>

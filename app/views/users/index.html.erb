@@ -35,7 +35,7 @@
 	<% @users.each do |user| %>
 		<% @user = user %>
 		<li>
-			<%= render 'user_thumb', locals: {user: user}%>
+			<%= render partial: 'user_thumb', locals: {user: user}%>
 		</li>
 	<%end%>
 </ul>

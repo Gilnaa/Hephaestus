@@ -1,9 +1,0 @@
-<div class="btn-group control-box pull-right">
-	<% if signed_in? and (current_user.role.is_admin or current_user.can_moderate_forum? thread.forum) %>
-    	<a class="btn" href="<%= delete_forum_thread_path(thread.id)%>"><i class="icon-remove"></i></a>
-    	<button class="btn"><i class="icon-share-alt"></i></button>
-		<button class="btn"><i class="icon-lock"></i></button>
-	<% end %>
-	<button class="btn"><i class="icon-warning-sign"></i></button>
-</div>
-

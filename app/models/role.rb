@@ -16,6 +16,9 @@ class Role < ActiveRecord::Base
   has_many :users
 
   before_save do |role|
+    role.is_admin ||= false
+    role.is_moderator ||= false
+    
     role.is_moderator = true if role.is_admin
     role.color ||= BLACK
   end

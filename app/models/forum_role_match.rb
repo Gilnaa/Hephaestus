@@ -9,14 +9,14 @@
 #     Gilad Naaman - initial API and implementation
 #-------------------------------------------------------------------------------
 class ForumRoleMatch < ActiveRecord::Base
-  belongs_to :forum, class_name: 'Forum::Forum'
+  belongs_to :forum, class_name: 'Forum'
   belongs_to :role
   attr_accessible :can_comment, :can_poll, :can_post, :can_view
   
   
   def self.get_default
     default = ForumRoleMatch.where('role_id = ? AND forum_id = ?', nil, nil).first
-    if not default
+    unless default
       default = self.create do |m|
         m.can_comment = m.can_post = m.can_view = true
         m.can_poll = false

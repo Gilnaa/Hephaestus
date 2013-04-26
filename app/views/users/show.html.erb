@@ -1,6 +1,11 @@
 <div class="row-fluid">
 	<div class="span3 text-center ">
-		<a href="#" class="btn"> <i class="icon-envelope"></i> Send message </a>
+		<a href="#" class="btn btn-block"> <i class="icon-envelope"></i> Send message </a>
+		<% if @user == current_user %>
+			<a href="#" class="btn btn-block"> <i class="icon-pencil"></i> Edit Profile </a>
+		<% elsif signed_in? and current_user.is_admin? %>
+			<a href="#" class="btn btn-block btn-info"> <i class="icon-pencil"></i> Edit Profile </a>
+		<% end -%>
 	</div>
 	<div class="span9">
 		<%= get_gravatar_for(@user, nil, "img-polaroid pull-right")%>
@@ -37,14 +42,14 @@
 						# of Threads
 					</dt>
 					<dd>
-						<%= @user.forum_threads.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
+						<%= @user.topics.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
 					</dd>
 					<br />
 					<dt>
 						# of Comments
 					</dt>
 					<dd>
-						<%= @user.forum_comments.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
+						<%= @user.comments.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
 					</dd>
 				</dl>
 			</div>
@@ -55,14 +60,14 @@
 						# of Threads
 					</dt>
 					<dd>
-						<%= @user.forum_threads.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
+						<%= @user.topics.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
 					</dd>
 					<br />
 					<dt>
 						# of Comments
 					</dt>
 					<dd>
-						<%= @user.forum_comments.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
+						<%= @user.comments.count%> <%= link_to 'watch', '#', class: 'btn btn-mini pull-right'%>
 					</dd>
 				</dl>
 			</div>

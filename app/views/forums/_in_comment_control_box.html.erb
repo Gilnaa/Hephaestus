@@ -1,0 +1,22 @@
+<div class="btn-group in_topic_control-box">
+	<% if signed_in? %>
+		<% is_moderator = current_user.can_moderate_forum? comment.forum %>
+		<% if is_moderator %>
+		
+			<%= button_tag raw("<i class=\"icon-remove\"></i>"), type: 'submit',
+			 form: 'form_delete_comment', class: 'btn', title: 'Delete' %> <!-- Delete -->
+			
+			<%= link_to raw("<i class=\"icon-pencil\"></i>"), edit_comment_path(comment.id),
+			 class: 'btn', title: 'Edit' %> <!-- Edit -->
+			 
+		<% elsif current_user == comment.author %>
+			<%= link_to raw("<i class=\"icon-pencil\"></i>"), edit_comment_path(comment.id),
+			 class: 'btn', title: 'Edit' %> <!-- Edit -->
+		<% end %>
+	<% end %>
+	<button class="btn"><i class="icon-warning-sign"></i></button> <!-- Report -->
+</div>
+<% if is_moderator %>
+	<%= form_tag comment_path(comment), method: :delete, id: 'form_delete_comment', style: 'display: none;' do |f|%>
+	<% end %>
+<% end -%>

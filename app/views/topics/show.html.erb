@@ -1,0 +1,75 @@
+<% provide :title, @topic.title%>
+<% content_for :breadcrumb do%>
+	<% @breadcrumbs = {'Forums' => forums_path, @topic.forum.category.name => forums_path(category_id: @topic.forum.category.id), @topic.forum.name => forum_path(@topic.forum.id), @topic.title => '#'}%>
+<% end -%>
+<div class="navbar">
+	<div class="navbar-inner">
+		<span class="brand"><%= @topic.title%></span>
+		<ul class="nav">
+			<li><%= link_to "Reply", new_comment_path(topic_id: @topic.id)%></li>
+		</ul>
+	</div>
+</div>
+<%if @number_of_pages > 1%>
+	<div class="pagination pagination-centered">
+		<ul>
+			<%if @page_number > 0%>
+				<li>
+					<%= link_to raw('<i class="icon-fast-backward"></i>'), forum_topic_page_path(@topic.id, 0)%>
+				</li>
+				<li>
+					<%= link_to raw('<i class="icon-step-backward"></i>'), forum_topic_page_path(@topic.id, @page_number - 1)%>
+				</li>
+			<%end%>
+	
+			<%(@number_of_pages).times do |i|%>
+	
+				<%if @page_number == i%>
+					<li class="active">
+						<%= link_to (i + 1).to_s, '#'%>
+					</li>
+				<%else%>
+					<li>
+						<%= link_to (i + 1).to_s, forum_topic_page_path(@topic.id, i)%>
+					</li>
+				<%end%>
+			
+			<%end%>
+	
+			<%if @page_number < @number_of_pages - 1%>
+			<li>
+				<%= link_to raw('<i class="icon-step-forward"></i>'), forum_topic_page_path(@topic.id, @page_number + 1)%>
+			</li>
+			<li>
+				<%= link_to raw('<i class="icon-fast-forward"></i>'), forum_topic_page_path(@topic.id, @number_of_pages)%>
+			</li>
+			<%end%>
+		</ul>
+	</div>
+<% end %>
+<div class="message message-op">
+	
+	<span class="pull-right">
+		<%= render partial: 'users/user_thumb', locals: {user: @topic.author} %>
+	</span>
+
+	<p><%= @topic.body%></p>
+	<%= render partial: 'forums/in_topic_control_box', locals: {topic: @topic}%>
+</div>
+<date class="pull-right topic_date"><small><%= format_date @topic.created_at %></small></date>
+<% if @comments.count > 0 %>
+	<br />
+	<h5 class="topic_comments_divider">Comments</h5>
+	<% @comments.each do |comment|%>
+		<div class="message <%= 'message-op' if comment.author == @topic.author %>">
+			<span class="pull-right">
+				<%= render partial: 'users/user_thumb', locals: {user: comment.author} %>
+			</span>
+			<p><%= comment.body%></p>
+			<%= render partial: 'forums/in_comment_control_box', locals: {comment: comment}%>
+		</div>
+		<date class="pull-right topic_date"><small><%= format_date comment.created_at %></small></date>
+		<br/>
+		<br/>
+	<% end %>
+<% end %>

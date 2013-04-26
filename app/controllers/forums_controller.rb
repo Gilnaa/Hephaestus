@@ -8,12 +8,12 @@
 # Contributors:
 #     Gilad Naaman - initial API and implementation
 #-------------------------------------------------------------------------------
-class ApplicationController < ActionController::Base
-  protect_from_forgery
-  include SessionsHelper
-  include ApplicationHelper
-  def handle_unverified_request
-    sign_out
-    super
+class ForumsController < ApplicationController
+  def index
+    @categories = Category.all
+  end
+
+  def show
+    @forum = Forum.find params[:id]
   end
 end
