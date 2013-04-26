@@ -41,9 +41,10 @@ admin = User.create do |u|    # Example Admin
   u.first_name = "Admino"
   u.last_name = "Admini"  # He's Italian.
   u.email = "admin@example.com"
-  u.password = u.password_confirmation = "admin"
+  u.password = u.password_confirmation = "admino"
   u.role = admins
 end
+admin.save
 mod = User.create do |u|    # Example Moderator
   u.username = "Moderator"
   u.first_name = "Amy"
@@ -64,23 +65,23 @@ end
 #--------------------------------
 # Categories & Forums
 #--------------------------------
-c1 = Forum::Category.create do |c|
+c1 = Category.create do |c|
   c.name = "First Category"
   c.description = "Some vague description."
 end
-c2 = Forum::Category.create do |c|
+c2 = Category.create do |c|
   c.name = "Second Category"
   c.description = "Some more vague description."
 end
 
 4.times do |i|
-  Forum::Forum.create do |f|
+  Forum.create do |f|
     f.name = "Forum No' #{i + 1}"
     f.category = c1
   end
 end
 4.times do |i|
-  Forum::Forum.create do |f|
+  Forum.create do |f|
     f.name = "Forum No' #{i + 5}"
     f.category = c2
   end

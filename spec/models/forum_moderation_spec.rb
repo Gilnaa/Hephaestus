@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe "thread/create.html.erb" do
+describe ForumModeration do
   pending "add some examples to (or delete) #{__FILE__}"
 end

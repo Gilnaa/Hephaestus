@@ -10,10 +10,10 @@
 #-------------------------------------------------------------------------------
 class ForumsController < ApplicationController
   def index
-    @categories = Forum::Category.all
+    @categories = Category.all
   end
 
   def show
-    @forum = Forum::Forum.find params[:id]
+    @forum = Forum.find params[:id]
   end
 end

@@ -1,5 +1,5 @@
 class Topic < ActiveRecord::Base
-  belongs_to :forum, class_name: 'Forum::Forum'
+  belongs_to :forum, class_name: 'Forum'
   belongs_to :author, class_name: 'User'
   attr_accessible :body, :title
   

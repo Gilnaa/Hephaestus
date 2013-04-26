@@ -28,7 +28,7 @@ module ApplicationHelper
     end
   end
   def forum_exists?(id)
-    unless Forum::Forum.exists? id
+    unless Forum.exists? id
       flash[:error] = "Could not find a forum with an ID of #{id}"
       redirect_to forums_path
       false

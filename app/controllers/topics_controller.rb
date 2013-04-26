@@ -33,7 +33,7 @@ class TopicsController < ApplicationController
   def new
     @topic = Topic.new
     # Don't allow the user to create a thread if he is not logged-in.
-    forum = Forum::Forum.find(params[:forum_id])
+    forum = Forum.find(params[:forum_id])
     if not signed_in?
       flash[:error] = "Please login before trying to create a new topics in the forum."
       redirect_to forum_path(forum)
