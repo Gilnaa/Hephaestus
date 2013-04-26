@@ -6,7 +6,7 @@
 	<div class="navbar-inner">
 		<span class="brand"><%= @topic.title%></span>
 		<ul class="nav">
-			<li><%= link_to "Reply", '#'%></li>
+			<li><%= link_to "Reply", new_comment_path(topic_id: @topic.id)%></li>
 		</ul>
 	</div>
 </div>
@@ -66,6 +66,7 @@
 				<%= render partial: 'users/user_thumb', locals: {user: comment.author} %>
 			</span>
 			<p><%= comment.body%></p>
+			<%= render partial: 'forums/in_comment_control_box', locals: {comment: comment}%>
 		</div>
 		<date class="pull-right topic_date"><small><%= format_date comment.created_at %></small></date>
 		<br/>

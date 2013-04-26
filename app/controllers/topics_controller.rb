@@ -15,12 +15,8 @@ class TopicsController < ApplicationController
   # GET /topics/1
   # GET /topics/1.json
   def show
-    @topic = Topic.where(id: params[:id]).first
-    if @topic.nil?
-      redirect_to forums_path
-      flash[:error] = "Found no topic with id of #{params[:id]}"
-    return
-    end
+    return unless topic_exists? params[:id]
+    @topic = Topic.find params[:id].to_i
 
     @number_of_pages = (@topic.comments.count / COMMENTS_PER_PAGE) + (@topic.comments.count % COMMENTS_PER_PAGE != 0 ? 1 : 0)
     @page_number = [params[:page_number].to_i, @number_of_pages].min
@@ -64,6 +60,8 @@ class TopicsController < ApplicationController
 
   # GET /topics/1/edit
   def edit
+    return unless topic_exists? params[:id]
+    
     @topic = Topic.find(params[:id])
     unless current_user.can_moderate_forum? @topic.forum
       if not signed_in? or (current_user != @topic.author)
@@ -83,9 +81,9 @@ class TopicsController < ApplicationController
     @topic.body, @topic.title = attrs[:body], attrs[:title]
 
     if attrs[:author_id] != current_user.id
-    # TODO: Scold user for trying to cheat the system using
-    # in-browser HTML editing tools.
-    # Yes, this is the only reason there is such field in the form.
+      # TODO: Scold user for trying to cheat the system using
+      # in-browser HTML editing tools.
+      # Yes, this is the only reason there is such field in the form.
     end
 
     # Don't allow the user to create thread if he hasn't the permissions to do
@@ -110,13 +108,14 @@ class TopicsController < ApplicationController
   # PUT /topics/1
   # PUT /topics/1.json
   def update
-    @topic = Topic.find(params[:id])
+    return unless topic_exists? params[:id]
+    @topic = Topic.find params[:id]
     attrs = params[:topic].dup
-    attrs.delete(:author_id)
-    attrs.delete(:forum_id)
+    attrs.delete :author_id
+    attrs.delete :forum_id
 
     respond_to do |format|
-      if @topic.update_attributes(attrs)
+      if @topic.update_attributes attrs
         format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }
         format.json { head :no_content }
       else
@@ -129,6 +128,8 @@ class TopicsController < ApplicationController
   # DELETE /topics/1
   # DELETE /topics/1.json
   def destroy
+    return unless topic_exists? params[:id]
+    
     @topic = Topic.find(params[:id])
     forum = @topic.forum
     if not signed_in? or not current_user.can_moderate_forum? forum

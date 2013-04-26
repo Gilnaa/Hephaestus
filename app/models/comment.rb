@@ -8,4 +8,8 @@ class Comment < ActiveRecord::Base
   before_save do |comment|
     comment.title ||= "Re: " + comment.topic.title
   end
+  
+  def forum
+    self.topic.forum
+  end
 end

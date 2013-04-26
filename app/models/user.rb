@@ -77,8 +77,8 @@ class User < ActiveRecord::Base
       forum.get_forum_rules(@role).can_poll
     end
   
-    def can_comment_in_forum?(forum)
-      forum.get_forum_rules(@role).can_comment
+    def can_comment_in_topic?(topic)
+      topic.forum.get_forum_rules(@role).can_comment
     end
 
 end
