@@ -18,7 +18,7 @@ admins = Role.create do |r|    # Admins
   r.groupname = 'Administrators'
   r.adjective = 'Admin'
   r.is_admin = true
-  r.color = '#00ff00'
+  r.color = '#008800'
 end
 mods = Role.create do |r|    # Moderators
   r.name = 'Moderation'

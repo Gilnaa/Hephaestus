@@ -25,8 +25,10 @@ class User < ActiveRecord::Base
   # Forum related associations.
   has_many :topics, foreign_key: 'author_id'
   has_many :comments, foreign_key: 'author_id'
-  has_many :forum_moderations, dependent: :destroy, class_name: 'Forum::ForumModeration'
-  has_many :category_moderations, dependent: :destroy, class_name: 'Forum::CategoryModeration'
+  has_many :forum_moderations, dependent: :destroy, foreign_key: 'moderator_id'
+  has_many :category_moderations, dependent: :destroy, foreign_key: 'moderator_id'
+  has_many :moderated_forums, through: :forum_moderations, source: 'moderated_forum'
+  has_many :moderated_categories, through: :category_moderations, source: 'moderated_category'
   
   before_save do |user|
     user.username.downcase!
@@ -60,8 +62,8 @@ class User < ActiveRecord::Base
       # The user will be able to moderate the forum if he is a moderator
       # of the specific forum or of the category he's in.
       category = forum.category
-      f_mod = ForumModeration.where(user_id: @id).find_by_forum_id(forum.id)
-      c_mod = CategoryModeration.where(user_id: @id).find_by_category_id(category.id)
+      f_mod = self.forum_moderations.find_by_forum_id(forum.id)
+      c_mod = self.category_moderations.find_by_category_id(category.id)
       (f_mod or c_mod)
     end
   
@@ -78,10 +80,10 @@ class User < ActiveRecord::Base
     end
   
     def can_comment_in_topic?(topic)
-      topic.forum.get_forum_rules(@role).can_comment
-    end
-    
-    def moderated_categories
-      
+      if topic.is_closed?
+        can_moderate_forum? topic.forum
+      else
+        topic.forum.get_forum_rules(@role).can_comment
+      end
     end
 end

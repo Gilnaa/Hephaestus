@@ -11,7 +11,6 @@
 class UsersController < ApplicationController
   # TODO: Add a settings for users display
   USERS_PER_PAGE = 50
-
   # GET /users
   # GET /users.json
   def index
@@ -58,7 +57,6 @@ class UsersController < ApplicationController
 
     if @user.save
       sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
       redirect_to root_path
     else
       render 'new'
@@ -71,7 +69,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, notice: I18n.t('users.user_updated') }
       else
         format.html { render action: "edit" }
       end

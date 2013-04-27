@@ -24,10 +24,10 @@ class SessionsController < ApplicationController
     
     if user && user.authenticate(params[:session][:password])
       sign_in user
-      flash[:success] = "Login Successful! Welcome back, #{user.first_name || user.username}"
+      flash[:success] = I18n.t 'sessions.sign_in_successful', name: (user.first_name || user.username)
       redirect_to user
     else
-      flash[:error] = 'Invalid email/password combination'
+      flash[:error] = I18n.t 'sessions.invalid_login_data'
       render 'new'
     end
   end

@@ -4,16 +4,16 @@
 en:
   activerecord:
     models:
-      user: 'User'
+      user: 'חשבון משתמש'
     attributes:
       user:
-        username: 'Nickname'
-        first_name: 'First Name'
-        last_name: 'Last Name'
-        email: 'EMail address'
+        username: 'שם משתמש'
+        first_name: 'שם פרטי'
+        last_name: 'שם משפחה'
+        email: 'כתובת דוא"ל"'
       
   html:
-    dir: 'ltr'
+    dir: 'rtl'
     
   general:
     sign_in_to_create_content: "Please sign in to the site before trying to post new content."

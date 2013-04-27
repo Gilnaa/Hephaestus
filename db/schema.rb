@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130426182015) do
+ActiveRecord::Schema.define(:version => 20130427114411) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -24,14 +24,15 @@ ActiveRecord::Schema.define(:version => 20130426182015) do
   add_index "categories", ["parent_id"], :name => "index_categories_on_parent_id"
 
   create_table "category_moderations", :force => true do |t|
-    t.integer  "category_id"
+    t.integer  "moderated_category_id"
     t.integer  "moderator_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
-  add_index "category_moderations", ["category_id"], :name => "index_category_moderations_on_category_id"
-  add_index "category_moderations", ["moderator_id", "category_id"], :name => "index_category_moderations_on_moderator_id_and_category_id"
+  add_index "category_moderations", ["moderated_category_id"], :name => "index_category_moderations_on_category_id"
+  add_index "category_moderations", ["moderated_category_id"], :name => "index_category_moderations_on_moderated_category_id"
+  add_index "category_moderations", ["moderator_id", "moderated_category_id"], :name => "category_moderation_moderator_moderated_index"
   add_index "category_moderations", ["moderator_id"], :name => "index_category_moderations_on_moderator_id"
 
   create_table "comments", :force => true do |t|
@@ -46,35 +47,15 @@ ActiveRecord::Schema.define(:version => 20130426182015) do
   add_index "comments", ["author_id"], :name => "index_comments_on_author_id"
   add_index "comments", ["topic_id"], :name => "index_comments_on_topic_id"
 
-  create_table "forum_category_moderations", :force => true do |t|
-    t.integer  "category_id"
-    t.integer  "user_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  add_index "forum_category_moderations", ["category_id"], :name => "index_forum_category_moderations_on_category_id"
-  add_index "forum_category_moderations", ["user_id"], :name => "index_forum_category_moderations_on_user_id"
-
-  create_table "forum_forum_moderations", :force => true do |t|
-    t.integer  "forum_id"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "forum_forum_moderations", ["forum_id"], :name => "index_forum_forum_moderations_on_forum_id"
-  add_index "forum_forum_moderations", ["user_id"], :name => "index_forum_forum_moderations_on_user_id"
-
   create_table "forum_moderations", :force => true do |t|
-    t.integer  "forum_id"
+    t.integer  "moderated_forum_id"
     t.integer  "moderator_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
-  add_index "forum_moderations", ["forum_id"], :name => "index_forum_moderations_on_forum_id"
-  add_index "forum_moderations", ["moderator_id", "forum_id"], :name => "index_forum_moderations_on_moderator_id_and_forum_id"
+  add_index "forum_moderations", ["moderated_forum_id"], :name => "index_forum_moderations_on_moderated_forum_id"
+  add_index "forum_moderations", ["moderator_id", "moderated_forum_id"], :name => "index_forum_moderations_on_moderator_id_and_moderated_forum_id"
   add_index "forum_moderations", ["moderator_id"], :name => "index_forum_moderations_on_moderator_id"
 
   create_table "forum_role_matches", :force => true do |t|
@@ -119,6 +100,7 @@ ActiveRecord::Schema.define(:version => 20130426182015) do
     t.text     "body"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "is_closed"
   end
 
   add_index "topics", ["author_id"], :name => "index_topics_on_author_id"

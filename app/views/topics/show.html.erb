@@ -5,8 +5,12 @@
 <div class="navbar">
 	<div class="navbar-inner">
 		<span class="brand"><%= @topic.title%></span>
-		<ul class="nav">
-			<li><%= link_to "Reply", new_comment_path(topic_id: @topic.id)%></li>
+		<ul class="nav pull-right">
+			<li>
+				<%if signed_in? and current_user.can_comment_in_topic? @topic %>
+					<%= link_to "Reply", new_comment_path(topic_id: @topic.id), class: "pull-right"%>
+				<% end -%>
+			</li>
 		</ul>
 	</div>
 </div>

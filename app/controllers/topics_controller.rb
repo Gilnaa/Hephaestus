@@ -35,14 +35,14 @@ class TopicsController < ApplicationController
     # Don't allow the user to create a thread if he is not logged-in.
     forum = Forum.find(params[:forum_id])
     if not signed_in?
-      flash[:error] = "Please login before trying to create a new topics in the forum."
+      flash[:error] = I18n.t 'general.sign_in_to_create_content'
       redirect_to forum_path(forum)
     return
     end
 
     # Don't allow the user to create thread if he hasn't the permissions to so.
     if not current_user.can_post_in_forum? forum
-      flash[:error] = "You do not have access for creating new topics in this forum."
+      flash[:error] = I18n.t 'forum.no_topic_create_permission'
       redirect_to forum_path(forum)
     return
     end
@@ -65,7 +65,7 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     unless current_user.can_moderate_forum? @topic.forum
       if not signed_in? or (current_user != @topic.author)
-        flash[:error] = "You do not have access to editing this topic."
+        flash[:error] = I18n.t 'forum.no_topic_edit_permission'
         redirect_to @topic
       return
       end
@@ -79,7 +79,7 @@ class TopicsController < ApplicationController
     attrs = params[:topic]
     @topic.forum_id, @topic.author = attrs[:forum_id], current_user
     @topic.body, @topic.title = attrs[:body], attrs[:title]
-
+    
     if attrs[:author_id] != current_user.id
       # TODO: Scold user for trying to cheat the system using
       # in-browser HTML editing tools.
@@ -89,16 +89,17 @@ class TopicsController < ApplicationController
     # Don't allow the user to create thread if he hasn't the permissions to do
     # so.
     if not current_user.can_post_in_forum? @topic.forum
-      flash[:error] = "You do not have access for creating new threads in this forum."
+      flash[:error] = I18n.t 'forum.no_topic_create_permission'
       redirect_to forum_path(forum)
     return
     end
 
     respond_to do |format|
       if @topic.save
-        format.html { redirect_to @topic, notice: 'Topic was successfully created.' }
+        format.html { redirect_to @topic, notice: I18n.t('forum.topic_created') }
         format.json { render json: @topic, status: :created, location: @topic }
       else
+        @e = @topic.errors
         format.html { render action: "new" }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
       end
@@ -116,7 +117,7 @@ class TopicsController < ApplicationController
 
     respond_to do |format|
       if @topic.update_attributes attrs
-        format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }
+        format.html { redirect_to @topic, notice: I18n.t('forum.topic_updated') }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -133,7 +134,7 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     forum = @topic.forum
     if not signed_in? or not current_user.can_moderate_forum? forum
-      flash[:error] = "You have no permission to delete topics in this forum."
+      flash[:error] = I18n.t 'forum.no_topic_delete_permission'
       redirect_to @topic
     return
     end
@@ -144,5 +145,9 @@ class TopicsController < ApplicationController
       format.json { head :no_content }
     end
 
+  end
+  
+  def toggle_lock
+    
   end
 end
