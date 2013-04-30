@@ -5,6 +5,9 @@ class Topic < ActiveRecord::Base
   
   validates :body, presence: true, length: {minimum: 3}
   validates :title, presence: true, length: {minimum: 3,maximum: 140}
-    
+  
+  validates :author_id, presence: true
+  validates :forum_id, presence: true
+  
   has_many :comments, dependent: :destroy
 end

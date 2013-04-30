@@ -9,15 +9,22 @@
 #     Gilad Naaman - initial API and implementation
 #-------------------------------------------------------------------------------
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  has_secure_password
-  attr_accessible  :password_digest, :password, :password_confirmation, :created_at
-  attr_accessible :email, :first_name, :last_name, :signature, :username
+  attr_accessible :created_at
+  attr_accessible :first_name, :last_name, :signature, :username
 
   validates :username, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
-  validates :password, presence: true, length: {minimum: 6}
+  validates :password, presence: true
   validates :password_confirmation, presence: true
 
   belongs_to :role

@@ -7,7 +7,7 @@
 		<span class="brand"><%= @topic.title%></span>
 		<ul class="nav pull-right">
 			<li>
-				<%if signed_in? and current_user.can_comment_in_topic? @topic %>
+				<%if user_signed_in? and current_user.can_comment_in_topic? @topic %>
 					<%= link_to "Reply", new_comment_path(topic_id: @topic.id), class: "pull-right"%>
 				<% end -%>
 			</li>

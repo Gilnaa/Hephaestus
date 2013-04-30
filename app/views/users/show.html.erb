@@ -3,7 +3,7 @@
 		<a href="#" class="btn btn-block"> <i class="icon-envelope"></i> Send message </a>
 		<% if @user == current_user %>
 			<a href="#" class="btn btn-block"> <i class="icon-pencil"></i> Edit Profile </a>
-		<% elsif signed_in? and current_user.is_admin? %>
+		<% elsif user_signed_in? and current_user.is_admin? %>
 			<a href="#" class="btn btn-block btn-info"> <i class="icon-pencil"></i> Edit Profile </a>
 		<% end -%>
 	</div>

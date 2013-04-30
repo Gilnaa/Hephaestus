@@ -9,6 +9,8 @@
 #     Gilad Naaman - initial API and implementation
 #-------------------------------------------------------------------------------
 Hephaestus::Application.routes.draw do
+  devise_for :users
+
   NUMERIC = /(0|[1-9][0-9]*)/
   root to: 'home#index'
   
@@ -17,9 +19,12 @@ Hephaestus::Application.routes.draw do
   match '/users/list/:page_number' => 'users#index', page_id: NUMERIC
   match '/signup/' => 'users#new'
 
-  resources :sessions, only: [:new, :create, :destroy]
-  match '/login/' => 'sessions#new'
-  match '/logout/' => 'sessions#destroy', via: :delete
+
+  devise_scope :user do
+    match '/login/' => "devise/sessions#new"
+    match '/logout/' => 'devise/sessions#destroy', via: :delete
+  end
+  
   
   resources :forums, only: [:index, :show], constraints: {:id => NUMERIC}
   scope '/forums', constraints: {:id => NUMERIC} do

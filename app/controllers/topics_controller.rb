@@ -1,6 +1,6 @@
 class TopicsController < ApplicationController
   COMMENTS_PER_PAGE = 10
-
+  
   # GET /topics
   # GET /topics.json
   def index
@@ -34,7 +34,7 @@ class TopicsController < ApplicationController
     @topic = Topic.new
     # Don't allow the user to create a thread if he is not logged-in.
     forum = Forum.find(params[:forum_id])
-    if not signed_in?
+    if not user_signed_in?
       flash[:error] = I18n.t 'general.sign_in_to_create_content'
       redirect_to forum_path(forum)
     return
@@ -64,7 +64,7 @@ class TopicsController < ApplicationController
     
     @topic = Topic.find(params[:id])
     unless current_user.can_moderate_forum? @topic.forum
-      if not signed_in? or (current_user != @topic.author)
+      if not user_signed_in? or (current_user != @topic.author)
         flash[:error] = I18n.t 'forum.no_topic_edit_permission'
         redirect_to @topic
       return
@@ -133,7 +133,7 @@ class TopicsController < ApplicationController
     
     @topic = Topic.find(params[:id])
     forum = @topic.forum
-    if not signed_in? or not current_user.can_moderate_forum? forum
+    if not user_signed_in? or not current_user.can_moderate_forum? forum
       flash[:error] = I18n.t 'forum.no_topic_delete_permission'
       redirect_to @topic
     return

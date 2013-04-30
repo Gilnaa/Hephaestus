@@ -41,16 +41,15 @@ admin = User.create do |u|    # Example Admin
   u.first_name = "Admino"
   u.last_name = "Admini"  # He's Italian.
   u.email = "admin@example.com"
-  u.password = u.password_confirmation = "admino"
+  u.password = u.password_confirmation = "adminoadmini"
   u.role = admins
 end
-admin.save
 mod = User.create do |u|    # Example Moderator
   u.username = "Moderator"
   u.first_name = "Amy"
   u.last_name = "Pond"
   u.email = "amy.pond@example.com"
-  u.password = u.password_confirmation = "amypond"
+  u.password = u.password_confirmation = "amypond42"
   u.role = mods
 end
 reg = User.create do |u|    # Example Admin
@@ -97,7 +96,7 @@ t1 = Topic.create do |t|
   t.author = User.first
 end
 c1 = Comment.create do |c|
-  c.author = mod
+  c.author = User.find 2
   c.topic = t1
   c.body = "Potato"
 end

@@ -1,5 +1,5 @@
 <div class="btn-group control-box pull-right">
-	<% if signed_in? and current_user.can_moderate_forum? topic.forum%>
+	<% if user_signed_in? and current_user.can_moderate_forum? topic.forum%>
     	<a class="btn" href="<%= topic_path(topic.id)%>"><i class="icon-remove"></i></a>
     	<button class="btn"><i class="icon-share-alt"></i></button>
 		<button class="btn"><i class="icon-lock"></i></button>

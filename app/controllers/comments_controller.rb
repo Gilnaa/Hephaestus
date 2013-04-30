@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  before_filter :authenticate_user!
+  
   def show
     return unless comment_exists? params[:id]
     comment = Comment.find params[:id]
@@ -9,7 +11,7 @@ class CommentsController < ApplicationController
     return unless topic_exists? params[:topic_id]
     @topic = Topic.find :first, params[:topic_id]
     
-    unless signed_in?
+    unless user_signed_in?
       flash[:error] = I18n.t 'general.sign_in_to_create_content'
       redirect_to @topic
     end
@@ -62,7 +64,7 @@ class CommentsController < ApplicationController
     
     @comment = Comment.find(params[:id])
     unless current_user.can_moderate_forum? @comment.forum
-      if not signed_in? or (current_user != @comment.author)
+      if not user_signed_in? or (current_user != @comment.author)
         flash[:error] = I18n.t 'forum.comment_created'
         redirect_to @comment
       return
@@ -93,7 +95,7 @@ class CommentsController < ApplicationController
     return unless comment_exists? params[:id]
     @comment = Comment.find(params[:id])
     topic = @comment.topic
-    unless signed_in? and current_user.can_moderate_forum? @comment.forum
+    unless user_signed_in? and current_user.can_moderate_forum? @comment.forum
       flash[:error] = I18n.t 'forum.no_comment_delete_permission'
       redirect_to @comment
     return

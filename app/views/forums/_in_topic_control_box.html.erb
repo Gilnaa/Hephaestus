@@ -1,5 +1,5 @@
 <div class="btn-group in_topic_control-box">
-	<% if signed_in? %>
+	<% if user_signed_in? %>
 		<% is_moderator = current_user.can_moderate_forum? topic.forum %>
 		<% if is_moderator %>
 		
